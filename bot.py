@@ -12,7 +12,7 @@ client = discord.Client(intents=intents)
 @tasks.loop(minutes=2)
 async def update_channel():
     try:
-        players = "TEST"
+        players = "player"
         online = True
         guild = client.guilds[0]
         channel = guild.get_channel(CHANNEL_ID)
