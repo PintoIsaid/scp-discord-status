@@ -55,27 +55,27 @@ async def update_channel():
         players = "0/60"
         online = False
 
-           servers = data.get("servers") or data.get("Servers") or []
+        servers = data.get("servers") or data.get("Servers") or []
 
         for server in servers:
-           sid = str(server.get("server_id") or server.get("ServerID") or server.get("id") or "")
-           name = str(server.get("name") or server.get("Name") or server.get("server_name") or server.get("ServerName") or "")
+            sid = str(server.get("server_id") or server.get("ServerID") or server.get("id") or "")
+            name = str(server.get("name") or server.get("Name") or server.get("server_name") or server.get("ServerName") or "")
 
-        if sid == "103398" or "UNDERGROUND" in name.upper():
-            online = True
+            if sid == "103398" or "UNDERGROUND" in name.upper():
+                online = True
 
-            pc = server.get("players_count") or server.get("playersCount") or server.get("PlayersCount") or {}
+                pc = server.get("players_count") or server.get("playersCount") or server.get("PlayersCount") or {}
 
-        if isinstance(pc, dict):
-            current = pc.get("current_players") or pc.get("currentPlayers") or pc.get("current") or 0
-            maximum = pc.get("max_players") or pc.get("maxPlayers") or pc.get("max") or 60
-            players = f"{current}/{maximum}"
-        else:
-            current = server.get("Players") or server.get("players") or 0
-            maximum = server.get("MaxPlayers") or server.get("max_players") or 60
-            players = f"{current}/{maximum}"
+                if isinstance(pc, dict):
+                    current = pc.get("current_players") or pc.get("currentPlayers") or pc.get("current") or 0
+                    maximum = pc.get("max_players") or pc.get("maxPlayers") or pc.get("max") or 60
+                    players = f"{current}/{maximum}"
+                else:
+                    current = server.get("Players") or server.get("players") or 0
+                    maximum = server.get("MaxPlayers") or server.get("max_players") or 60
+                    players = f"{current}/{maximum}"
 
-        break
+                break
 
         guild = client.guilds[0]
         channel = guild.get_channel(CHANNEL_ID)
