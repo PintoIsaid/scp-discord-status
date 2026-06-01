@@ -50,23 +50,25 @@ async def update_channel():
 
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as resp:
-                raw = await resp.text()
+                data = await resp.json(content_type=None)
 
-        try:
-            data = json.loads(raw)
-        except json.JSONDecodeError:
-            data = raw
+        players = "0/60"
+        online = False
 
-        current_players = extract_player_count(data)
-
-        status = "🟢 Online" if current_players is not None else "🔴 Offline"
-        players_text = f"{current_players}/{MAX_PLAYERS}" if current_players is not None else f"0/{MAX_PLAYERS}"
+        servers = data.get("Servers", [])
+        for server in servers:
+            if str(server.get("ServerID")) == "103398":
+                online = True
+                players = str(server.get("Players", "0/60"))
+                print(server)
+                break
 
         guild = client.guilds[0]
         channel = guild.get_channel(CHANNEL_ID)
 
         if channel:
-            await channel.edit(name=f"{status} | {players_text}")
+            status = "🟢 Online" if online else "🔴 Offline"
+            await channel.edit(name=f"{status} | {players}")
 
     except Exception as e:
         print(e)
