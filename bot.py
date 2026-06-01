@@ -46,7 +46,7 @@ def extract_player_count(payload):
 @tasks.loop(minutes=2)
 async def update_channel():
     try:
-         url = f"https://api.scpslgame.com/serverinfo.php?id={ACCOUNT_ID}&key={API_KEY}&players=true"
+        url = f"https://api.scpslgame.com/serverinfo.php?id={ACCOUNT_ID}&key={API_KEY}&players=true"
 
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as resp:
