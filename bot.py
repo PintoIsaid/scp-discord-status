@@ -46,21 +46,42 @@ def extract_player_count(payload):
 @tasks.loop(minutes=2)
 async def update_channel():
     try:
-        url = f"https://api.scpslgame.com/serverinfo.php?id={ACCOUNT_ID}&key={API_KEY}&players=true"
+         url = f"https://api.scpslgame.com/serverinfo.php?id={ACCOUNT_ID}&key={API_KEY}&players=true"
 
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as resp:
                 data = await resp.json(content_type=None)
 
         players = "0/60"
-        online = True
+        online = False
 
-        servers = data.get("Servers", [])
+        servers = data.get("servers") or data.get("Servers") or []
+
         for server in servers:
-            if str(server.get("ServerID")) == "103398":
+            server_id = str(
+                server.get("ServerID")
+                or server.get("server_id")
+                or server.get("id")
+                or ""
+            )
+
+            if server_id == "103398" or "UNDERGROUND-PROJECT" in str(server).upper():
                 online = True
-                players = str(server.get("Players", "0/60"))
-                print(server)
+
+                pc = (
+                    server.get("players_count")
+                    or server.get("PlayersCount")
+                    or server.get("playersCount")
+                    or {}
+                )
+
+                if isinstance(pc, dict):
+                    current = pc.get("current_players") or pc.get("currentPlayers") or pc.get("current") or 0
+                    maximum = pc.get("max_players") or pc.get("maxPlayers") or pc.get("max") or 60
+                    players = f"{current}/{maximum}"
+                else:
+                    players = str(server.get("Players") or server.get("players") or "0/60")
+
                 break
 
         guild = client.guilds[0]
