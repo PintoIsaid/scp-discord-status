@@ -17,7 +17,7 @@ async def update_channel():
                 data = await resp.json()
 
         players = "test"
-        online = False
+        online = True
 
         for server in data:
             if "199.127.62.78:3000" in str(server):
