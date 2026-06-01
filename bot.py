@@ -17,7 +17,7 @@ async def update_channel():
                 data = await resp.json()
 
         players = "0/60"
-        online = False
+        online = True
 
         for server in data:
             if "UNDERGROUND-PROJECT" in str(server):
