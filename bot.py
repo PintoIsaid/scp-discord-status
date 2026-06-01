@@ -12,19 +12,8 @@ client = discord.Client(intents=intents)
 @tasks.loop(minutes=2)
 async def update_channel():
     try:
-        async with aiohttp.ClientSession() as session:
-            async with session.get("https://backend.scpslgame.com/api/serverlist.php") as resp:
-                data = await resp.json()
-
-        players = "test"
+        players = "TEST"
         online = True
-
-        for server in data:
-            if "199.127.62.78:3000" in str(server):
-                online = True
-                players = f"{server.get('Players',0)}/{server.get('MaxPlayers',40)}"
-                break
-
         guild = client.guilds[0]
         channel = guild.get_channel(CHANNEL_ID)
 
