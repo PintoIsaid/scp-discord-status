@@ -16,7 +16,7 @@ async def update_channel():
             async with session.get("https://backend.scpslgame.com/api/serverlist.php") as resp:
                 data = await resp.json()
 
-        players = "0/40"
+        players = "test"
         online = False
 
         for server in data:
