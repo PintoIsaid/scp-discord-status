@@ -53,7 +53,7 @@ async def update_channel():
                 data = await resp.json(content_type=None)
 
         players = "0/60"
-        online = False
+        online = True
 
         servers = data.get("Servers", [])
         for server in servers:
