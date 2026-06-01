@@ -13,8 +13,8 @@ client = discord.Client(intents=intents)
 async def update_channel():
     try:
         async with aiohttp.ClientSession() as session:
-        async with session.get("https://api.scpslgame.com/lobbylist.php?format=json") as resp:
-            data = await resp.json()
+            async with session.get("https://api.scpslgame.com/lobbylist.php?format=json") as resp:
+                data = await resp.json()
 
     players = "0/60"
     online = False
